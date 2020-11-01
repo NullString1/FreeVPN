@@ -13,7 +13,7 @@ class CustomFormatter(argparse.RawDescriptionHelpFormatter):
     def _format_action_invocation(self, action):
         if not action.option_strings:
             metavar, = self._metavar_formatter(action, action.dest)(1)
-            return metavar
+            return(metavar)
         else:
             parts = []
             if action.nargs == 0:
@@ -22,9 +22,9 @@ class CustomFormatter(argparse.RawDescriptionHelpFormatter):
                 default = action.dest.upper()
                 args_string = self._format_args(action, default)
                 for option_string in action.option_strings:
-                    parts.append('%s' % option_string)
-                parts[-1] += ' %s'%args_string
-            return ', '.join(parts)
+                    parts.append("%s" % option_string)
+                parts[-1] += " %s"%args_string
+            return(", ".join(parts))
 
 parser=argparse.ArgumentParser(description="Gets ovpns from freevpn.us with supplied username and password. \
 Ovpns will be in config.zip", formatter_class=CustomFormatter, usage="%(prog)s [-h] [-u USERNAME] [-p PASSWORD] \
@@ -32,9 +32,9 @@ Ovpns will be in config.zip", formatter_class=CustomFormatter, usage="%(prog)s [
 
 parser.add_argument("-u", "--username", help="username to register account with", metavar="   USERNAME")
 parser.add_argument("-p", "--password", help="password to register account with", metavar="   PASSWORD")
-parser.add_argument("-f", "--firefox_bin", default='/usr/local/bin/firefox/firefox', help="path to firefox", metavar="PATH")
-parser.add_argument("-g", "--gecko_bin", default='/usr/local/bin/geckodriver', help="path to geckodriver", metavar="  PATH")
-parser.add_argument("-o", "--output", default='config.zip', help="output file (zip)", metavar="     PATH")
+parser.add_argument("-f", "--firefox_bin", default="/usr/local/bin/firefox/firefox", help="path to firefox", metavar="PATH")
+parser.add_argument("-g", "--gecko_bin", default="/usr/local/bin/geckodriver", help="path to geckodriver", metavar="  PATH")
+parser.add_argument("-o", "--output", default="config.zip", help="output file (zip)", metavar="     PATH")
 args=parser.parse_args()
 
 
