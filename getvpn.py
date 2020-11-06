@@ -29,28 +29,28 @@ class CustomFormatter(argparse.RawDescriptionHelpFormatter):
             return(", ".join(parts))
 
 
-parser = argparse.ArgumentParser(description="Gets ovpns from freevpn.us with\
-                                 supplied username and password. Ovpns will be\
-                                 in config.zip",
+parser = argparse.ArgumentParser(description="Gets ovpns from freevpn.us with"
+                                 "supplied username and password. Ovpns will be"
+                                 "in config.zip",
                                  formatter_class=CustomFormatter,
-                                 usage="%(prog)s [-h] [-u USERNAME] \
-                                 [-p PASSWORD] [-f PATH] [-g PATH] \
-                                 [-o PATH]")
+                                 usage="%(prog)s [-h] [-u USERNAME] "
+                                 "[-p PASSWORD] [-f PATH] [-g PATH] "
+                                 "[-o PATH]")
 
-parser.add_argument("-u", "--username", help="username to register account\
-                    with",
+parser.add_argument("-u", "--username", help="username to register account"
+                    "with",
                     metavar="   USERNAME")
-parser.add_argument("-p", "--password", help="password to register account\
-                    with",
+parser.add_argument("-p", "--password", help="password to register account"
+                    "with",
                     metavar="   PASSWORD")
-parser.add_argument("-f", "--firefox_bin", default="/usr/local/bin/firefox\
-                    /firefox", help="path to firefox",
+parser.add_argument("-f", "--firefox_bin", default="/usr/local/bin/firefox"
+                    "/firefox", help="path to firefox",
                     metavar="PATH")
-parser.add_argument("-g", "--gecko_bin", default="/usr/local/bin/geckodriver\
-                    ", help="path to geckodriver",
+parser.add_argument("-g", "--gecko_bin", default="/usr/local/bin/geckodriver", 
+                    help="path to geckodriver",
                     metavar="  PATH")
-parser.add_argument("-o", "--output", default="config.zip", help="output file\
-                    (zip)", metavar="     PATH")
+parser.add_argument("-o", "--output", default="config.zip", help="output file"
+                    "(zip)", metavar="     PATH")
 args = parser.parse_args()
 
 
@@ -67,20 +67,20 @@ serv = Service(args.gecko_bin)
 driver = webdriver.Firefox(options=options, service=serv)
 driver.get("https://www.freevpn.us/vpn/us/")
 srvs = {}
-srvs[1] = int(driver.find_element_by_xpath("//div[contains(@class,\
-'col-xl-3')][1]//div[contains(@class, 'card-body')]//span[1]").text)
-srvs[2] = int(driver.find_element_by_xpath("//div[contains(@class,\
-'col-xl-3')][2]//div[contains(@class, 'card-body')]//span[1]").text)
-srvs[3] = int(driver.find_element_by_xpath("//div[contains(@class,\
-'col-xl-3')][3]//div[contains(@class, 'card-body')]//span[1]").text)
-srvs[4] = int(driver.find_element_by_xpath("//div[contains(@class,\
-'col-xl-3')][4]//div[contains(@class, 'card-body')]//span[1]").text)
+srvs[1] = int(driver.find_element_by_xpath("//div[contains(@class,"
+"'col-xl-3')][1]//div[contains(@class, 'card-body')]//span[1]").text)
+srvs[2] = int(driver.find_element_by_xpath("//div[contains(@class,"
+"'col-xl-3')][2]//div[contains(@class, 'card-body')]//span[1]").text)
+srvs[3] = int(driver.find_element_by_xpath("//div[contains(@class,"
+"'col-xl-3')][3]//div[contains(@class, 'card-body')]//span[1]").text)
+srvs[4] = int(driver.find_element_by_xpath("//div[contains(@class,"
+"'col-xl-3')][4]//div[contains(@class, 'card-body')]//span[1]").text)
 srvs = {key: value for key, value in sorted(srvs.items(), key=lambda item: item
                                             [1])}
 
 best = driver.find_element_by_xpath("//div[contains(@class, 'col-xl-3')][" +
-                                    str(srvs[4]) + "]//div[contains(@class, \
-                                    'card-body')]/a").get_attribute("href")
+                                    str(srvs[4]) + "]//div[contains(@class, "
+                                    "'card-body')]/a").get_attribute("href")
 
 driver.get(best)
 sleep(3)
@@ -95,14 +95,14 @@ sleep(2)
 while username is None:
     global password, hostname
     try:
-        username = driver.find_element_by_xpath("//ul[contains(@id, \
-                                                'savetoimage')]/li[1]").text
-        password = driver.find_element_by_xpath("//ul[contains(@id, \
-                                                'savetoimage')]/li[2]").text
-        hostname = driver.find_element_by_xpath("//ul[contains(@id, \
-                                                'savetoimage')]/li[3]").text
-        config = driver.find_element_by_xpath("//ul[contains(@id, \
-                                              'savetoimage')]/li[6]/a")\
+        username = driver.find_element_by_xpath("//ul[contains(@id, "
+                                                "'savetoimage')]/li[1]").text
+        password = driver.find_element_by_xpath("//ul[contains(@id, "
+                                                "'savetoimage')]/li[2]").text
+        hostname = driver.find_element_by_xpath("//ul[contains(@id, "
+                                                "'savetoimage')]/li[3]").text
+        config = driver.find_element_by_xpath("//ul[contains(@id, "
+                                              "'savetoimage')]/li[6]/a")\
                        .get_attribute("href")
         open(output, "wb").write(requests.get(config).content)
     except exceptions.NoSuchElementException:
